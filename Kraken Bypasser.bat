@@ -98,7 +98,7 @@ del /q "C:\Windows\Prefetch\*" >nul 2>&1
 echo [95mPrefetch folder deleted[0m
 
 
-@REM Delete Recents registery
+@REM Delete Recents registry
 echo [33mDeleting Recents registery[0m
 reg delete "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\RecentDocs" /f /va >nul
 reg delete "HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Compatibility Assistant\Store" /f /va >nul
@@ -107,7 +107,7 @@ reg delete "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer
 reg delete "HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\ComDlg32\CIDSizeMRU" /f /va >nul
 reg delete "HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\RunMRU" /f /va >nul
 reg delete "HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FeatureUsage\AppSwitched" /f /va >nul
-@REM Set the permission and after deleting revert it back
+@REM Set the permissions and revert them after deletion
 set "mostRecentApplicationCommand=$regKey = [Microsoft.Win32.Registry]::CurrentUser.OpenSubKey(''SOFTWARE\Microsoft\DirectInput\MostRecentApplication'',[Microsoft.Win32.RegistryKeyPermissionCheck]::ReadWriteSubTree,[System.Security.AccessControl.RegistryRights]::ChangePermissions); $acl = $regKey.GetAccessControl(); $rule=New-Object System.Security.AccessControl.RegistryAccessRule(''Administrators'', ''FullControl'', ''ContainerInherit, ObjectInherit'', ''None'', ''Allow''); $acl.SetAccessRule($rule); $regKey.SetAccessControl($acl)"
 set "mostRecentApplicationResetCommand=$regKey=[Microsoft.Win32.Registry]::CurrentUser.OpenSubKey(''SOFTWARE\Microsoft\DirectInput\MostRecentApplication'',[Microsoft.Win32.RegistryKeyPermissionCheck]::ReadWriteSubTree,[System.Security.AccessControl.RegistryRights]::ChangePermissions); $acl=$regKey.GetAccessControl(); $ruleToRemove=$acl.Access|Where-Object{ $_.RegistryRights -eq [System.Security.AccessControl.RegistryRights]::FullControl -and $_.AccessControlType -eq [System.Security.AccessControl.AccessControlType]::Allow -and $_.IdentityReference.Value -eq ''BUILTIN\Administrators'' -and $_.IsInherited -eq $false -and $_.PropagationFlags -eq [System.Security.AccessControl.PropagationFlags]::None }; if($ruleToRemove){$acl.RemoveAccessRule($ruleToRemove); $regKey.SetAccessControl($acl)}"
 powershell -Command ^
@@ -116,7 +116,7 @@ reg delete "HKEY_CURRENT_USER\SOFTWARE\Microsoft\DirectInput\MostRecentApplicati
 powershell -Command ^
     "Start-Process powershell -ArgumentList '-NoProfile -ExecutionPolicy Bypass -Command ""%mostRecentApplicationResetCommand%""' -Verb RunAs"
 reg delete "HKEY_CLASSES_ROOT\Local Settings\Software\Microsoft\Windows\Shell\MuiCache" /f /va >nul
-@REM Set the permission and after deleting revert it back
+@REM Set the permissions and revert them after deletion
 setlocal enabledelayedexpansion
 for /f "tokens=*" %%i in ('reg query "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\bam\State\UserSettings" /s /f "*" /k 2^>nul') do (
     set "key=%%i"
