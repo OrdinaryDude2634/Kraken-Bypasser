@@ -1,7 +1,7 @@
-## How does it work?
-It works by deleting some log files and restarting processes to make the pc check harder, however do note it does not guarantee bypassing as i might have missed some things or the person checking might simply conclude you are guilty because of being too suspicious(e.g. having cleared logs)
+## How Does It Work?
+It works by deleting some log files and restarting processes to make the PC checks harder, however, do note it does not guarantee bypassing as I might have missed some things or the person checking might simply conclude you are guilty because of being too suspicious (e.g. having cleared logs)
 
-Here's a list of what it does in order
+Here's a list of what it does in order:
 * Delete Chrome history, cache and cookies
 * Delete TZ *(looks for any file named "chrome.exe" in the same directory)*
 * Delete %temp%
@@ -17,7 +17,7 @@ Here's a list of what it does in order
 * * %APPDATA%\Microsoft\Windows\Recent\CustomDestinations
 * Delete Prefetch folder
 * * C:\Windows\Prefetch
-* Delete Recents registery
+* Delete Recents registry
 * * HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\RecentDocs
 * * HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Compatibility Assistant\Store
 * * HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\ComDlg32\OpenSavePidlMRU\exe
@@ -38,7 +38,7 @@ Here's a list of what it does in order
 * * DPS
 * * DiagTrack
 
-## Why only TZ?
-Because i only had access to that to test and develop on and it's decently legit for pvp and such
+## Why Only TZ?
+Because I only had access to that to test and develop on and it's decently legit for pvp and such
 
-I do realize TZX is known to be better for legit pvp but as i said, i did not have access to it
+I do realize TZX is known to be better for legit pvp but as I said, I did not have access to it
