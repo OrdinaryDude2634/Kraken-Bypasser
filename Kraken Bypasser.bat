@@ -5,11 +5,11 @@ CLS
 
 
 
-title Kraken Bypasser
-@REM Check if the script is running as administrator
+
+@REM Check if the script is running as an administrator
 net session >nul 2>&1
 if %errorlevel% == 0 (
-    echo [32mThe script is running as administrator[0m
+    echo [32mThe script is running as an administrator[0m
 ) else (
     echo [31mPlease run this script as an administrator[0m
     pause
@@ -17,33 +17,82 @@ if %errorlevel% == 0 (
 )
 
 
+@REM Change the name of the currently running file for camouflage
+set "camouflageName=Windows_KMS_Activation.bat"
+if /i "%~nx0" neq "%camouflageName%" (
+    setlocal enabledelayedexpansion
+    echo [33mChanging the name of the currently running file to !camouflageName! for camouflage[0m
+    set "renameCommand=Rename-Item -Path ''%~f0'' -NewName ''%~dp0!camouflageName!''; Start-Process -FilePath ''%~dp0!camouflageName!'' -Verb RunAs"
+    powershell -Command ^
+        "Start-Process powershell -ArgumentList '-NoProfile -ExecutionPolicy Bypass -Command ""!renameCommand!""' -Verb RunAs"
+    endlocal
+    exit /b
+)
+
+
+title Kraken Bypasser
 echo [1;32mKraken Bypasser[0m
 echo [33mThis tool is designed to [4mtry[0;33m to hide [95mTZ[33m from pc checks[0m
 pause
 
+@REM Delete browser's history, cache and cookies
+:browser_consent
+set /p delete_browser_consent=[34mDo you want to delete any browser's history, cache and cookies? (Y/N): [0m
+set "delete_browser_consent=%delete_browser_consent:~0,1%"
+if /i "%delete_browser_consent%" == "Y" (
+    @REM Delete Chrome history, cache and cookies
+    set /p delete_chrome_consent="[34mDo you want to delete Chrome's history, cache and cookies? (Y/N): [0m"
+    set "delete_chrome_consent=%delete_chrome_consent:~0,1%"
+    if /i "%delete_chrome_consent%" == "Y" (
+        taskkill /f /im "chrome.exe" /t >nul
+        echo [33mDeleting Chrome history[0m
+        del /q "%LOCALAPPDATA%\Google\Chrome\User Data\Default\History"
+        echo [95mChrome history deleted[0m
+        echo [33mDeleting Chrome cache[0m
+        del /q "%LOCALAPPDATA%\Google\Chrome\User Data\Default\Cache"
+        echo [95mChrome cache deleted[0m
+        echo [33mDeleting Chrome cookies[0m
+        del /q "%LOCALAPPDATA%\Google\Chrome\User Data\Default\Cookies"
+        echo [95mChrome cookies deleted[0m
+    )
 
-@REM Delete Chrome history, cache and cookies
-:chrome_consent
-set /p delete_chrome_consent=[34mDo you want to delete Chrome's history, cache and cookies? (Y/N): [0m
-set "delete_chrome_consent=%delete_chrome_consent:~0,1%"
-if /i "%delete_chrome_consent%" == "Y" (
-    taskkill /f /im "chrome.exe" /t >nul
-    echo [33mDeleting Chrome history[0m
-    del /q "%LOCALAPPDATA%\Google\Chrome\User Data\Default\History"
-    echo [95mChrome history deleted[0m
-    echo [33mDeleting Chrome cache[0m
-    del /q "%LOCALAPPDATA%\Google\Chrome\User Data\Default\Cache"
-    echo [95mChrome cache deleted[0m
-    echo [33mDeleting Chrome cookies[0m
-    del /q "%LOCALAPPDATA%\Google\Chrome\User Data\Default\Cookies"
-    echo [95mChrome cookies deleted[0m
-) else if /i "%delete_chrome_consent%"=="N" (
+    @REM Delete Opera history, cache and cookies
+    set /p delete_opera_consent="[34mDo you want to delete Opera's history, cache and cookies? (Y/N): [0m"
+    set "delete_opera_consent=%delete_opera_consent:~0,1%"
+    if /i "%delete_opera_consent%" == "Y" (
+        taskkill /f /im "opera.exe" /t >nul
+        echo [33mDeleting Opera history[0m
+        del /q "%APPDATA%\Opera Software\Opera GX Stable\History"
+        echo [95mOpera history deleted[0m
+        echo [33mDeleting Opera cache[0m
+        del /q "%APPDATA%\Opera Software\Opera GX Stable\Cache"
+        echo [95mOpera cache deleted[0m
+        echo [33mDeleting Opera cookies[0m
+        del /q "%APPDATA%\Opera Software\Opera GX Stable\Cookies"
+        echo [95mOpera cookies deleted[0m
+    )
+
+    @REM Delete Edge history, cache and cookies
+    set /p delete_edge_consent="[34mDo you want to delete Edge's history, cache and cookies? (Y/N): [0m"
+    set "delete_edge_consent=%delete_edge_consent:~0,1%"
+    if /i "%delete_edge_consent%" == "Y" (
+        taskkill /f /im "edge.exe" /t >nul
+        echo [33mDeleting Edge history[0m
+        del /q "%LOCALAPPDATA%\Microsoft\Edge\User Data\Default\History"
+        echo [95mEdge history deleted[0m
+        echo [33mDeleting Edge cache[0m
+        del /q "%LOCALAPPDATA%\Microsoft\Edge\User Data\Default\Cache"
+        echo [95mEdge cache deleted[0m
+        echo [33mDeleting Edge cookies[0m
+        del /q "%LOCALAPPDATA%\Microsoft\Edge\User Data\Default\Cookies"
+        echo [95mEdge cookies deleted[0m
+    )
+) else if /i "%delete_browser_consent%"=="N" (
     @REM Do nothing
 ) else (
     echo [31mInvalid input, please enter Y or N[0m
-    goto chrome_consent
+    goto browser_consent
 )
-
 
 @REM Delete TZ
 if not exist chrome.exe (
