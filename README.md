@@ -2,7 +2,11 @@
 It works by deleting some log files and restarting processes to make the PC checks harder, however, do note it does not guarantee bypassing as I might have missed some things or the person checking might simply conclude you are guilty because of being too suspicious (e.g. having cleared logs)
 
 Here's a list of what it does in order:
-* Delete Chrome history, cache and cookies
+* Change the file name during script execution for camouflage
+* * to "Windows_KMS_Activation.bat"
+* Delete Chrome history, cache and cookies *(optional)*
+* Delete Opera history, cache and cookies *(optional)*
+* Delete Edge history, cache and cookies *(optional)*
 * Delete TZ *(looks for any file named "chrome.exe" in the same directory)*
 * Delete %temp%
 * Delete Recents folder
